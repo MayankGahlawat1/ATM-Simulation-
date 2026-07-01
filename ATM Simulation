@@ -1,0 +1,86 @@
+BALANCE = 5000
+PIN = 1234
+
+
+def display_menu():
+    print("\n====== ATM MENU ======")
+    print("1. Check Status")
+    print("2. Deposit")
+    print("3. Withdraw")
+    print("4. Exit")
+
+
+def main():
+    balance = BALANCE
+    max_attempts = 3
+
+    # PIN Verification
+    for attempt in range(max_attempts):
+        try:
+            entered_pin = int(input("Enter PIN: "))
+        except ValueError:
+            print("PIN must contain only numbers.")
+            continue
+
+        if entered_pin == PIN:
+            print("\nLogin Successful!")
+
+            while True:
+                display_menu()
+                choice = input("Select an option: ").strip().lower()
+
+                if choice in ["1", "check status"]:
+                    print(f"Current Balance: ${balance}")
+
+                elif choice in ["2", "deposit"]:
+                    try:
+                        amount = float(input("Enter amount to deposit: $"))
+
+                        if amount <= 0:
+                            print("Amount must be greater than 0.")
+                            continue
+
+                        balance += amount
+                        print("Deposit Successful!")
+                        print(f"New Balance: ${balance}")
+
+                    except ValueError:
+                        print("Please enter a valid amount.")
+
+                elif choice in ["3", "withdraw"]:
+                    try:
+                        amount = float(input("Enter amount to withdraw: $"))
+
+                        if amount <= 0:
+                            print("Amount must be greater than 0.")
+
+                        elif amount > balance:
+                            print("Insufficient Balance.")
+
+                        else:
+                            balance -= amount
+                            print("Withdrawal Successful!")
+                            print(f"Remaining Balance: ${balance}")
+
+                    except ValueError:
+                        print("Please enter a valid amount.")
+
+                elif choice in ["4", "exit"]:
+                    print("Thank you for using the ATM!")
+                    break
+
+                else:
+                    print("Invalid option. Please try again.")
+
+            break
+
+        else:
+            remaining = max_attempts - attempt - 1
+            if remaining:
+                print(f"Incorrect PIN. Attempts remaining: {remaining}")
+            else:
+                print("Too many incorrect attempts. Account locked.")
+
+
+if __name__ == "__main__":
+    main()
